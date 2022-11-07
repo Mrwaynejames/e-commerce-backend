@@ -30,8 +30,8 @@ router.get('/:id', async (req, res) => {
     const categoryInfo = await Category.findByPk(req.params.id, {
       include: [{ model:Product, attributes: ['id', 'product_name', 'price', 'stock', 'category_id']}],
     });
-    if (!categoryInfo
-  ){
+    if (!categoryInfo)
+    {
       res.status(404).json({message: 'No Category found with this id'});
       return;
     }
@@ -89,8 +89,7 @@ router.delete('/:id', async (req, res) => {
       return;
     }
 
-    res.status(200).json(categoryInfo
-  );
+    res.status(200).json(categoryInfo);
   } catch (err) {
     res.status(500).json(err);
   }
