@@ -6,7 +6,13 @@ const { Category, Product } = require('../../models');
   // be sure to include its associated Products
 router.get('/', async (req, res) => {
   try {
-  const categoryInfo = await Category.findAll();
+  const categoryInfo = await Category.findAll({
+    include: [
+      {
+        model: Product, attributes: ['id', 'product_name', 'price', 'stock', 'category_id']
+      }
+    ]
+  });
   console.log(categoryInfo
 );
   const categories = categoryInfo.map((category) => category.get({plain: true}));
@@ -22,7 +28,7 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
   try {
     const categoryInfo = await Category.findByPk(req.params.id, {
-      include: [{ model:Product}],
+      include: [{ model:Product, attributes: ['id', 'product_name', 'price', 'stock', 'category_id']}],
     });
     if (!categoryInfo
   ){
