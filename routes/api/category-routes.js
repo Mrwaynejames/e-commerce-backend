@@ -17,8 +17,7 @@ router.get('/', async (req, res) => {
 );
   const categories = categoryInfo.map((category) => category.get({plain: true}));
   console.log("categories", categories);
-  res.status(200).json(categoryInfo
-);
+  res.status(200).json(categoryInfo);
   console.log() 
   } catch (err) {
     res.status(500).json(err);
@@ -35,8 +34,7 @@ router.get('/:id', async (req, res) => {
       res.status(404).json({message: 'No Category found with this id'});
       return;
     }
-    res.status(200).json(categoryInfo
-  );
+    res.status(200).json(categoryInfo);
   }catch(err) {
     res.status(500).json(err);
   }
