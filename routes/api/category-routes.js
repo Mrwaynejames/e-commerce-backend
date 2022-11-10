@@ -6,18 +6,18 @@ const { Category, Product } = require('../../models');
   // be sure to include its associated Products
 router.get('/', async (req, res) => {
   try {
-  const categoryInfo = await Category.findAll({
+  const categoryData = await Category.findAll({
     include: [
       {
         model: Product, attributes: ['id', 'product_name', 'price', 'stock', 'category_id']
       }
     ]
   });
-  console.log(categoryInfo
+  console.log(categoryData
 );
-  const categories = categoryInfo.map((category) => category.get({plain: true}));
+  const categories = categoryData.map((category) => category.get({plain: true}));
   console.log("categories", categories);
-  res.status(200).json(categoryInfo);
+  res.status(200).json(categoryData);
   console.log() 
   } catch (err) {
     res.status(500).json(err);
@@ -26,15 +26,15 @@ router.get('/', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
   try {
-    const categoryInfo = await Category.findByPk(req.params.id, {
+    const categoryData = await Category.findByPk(req.params.id, {
       include: [{ model:Product, attributes: ['id', 'product_name', 'price', 'stock', 'category_id']}],
     });
-    if (!categoryInfo)
+    if (!categoryData)
     {
       res.status(404).json({message: 'No Category found with this id'});
       return;
     }
-    res.status(200).json(categoryInfo);
+    res.status(200).json(categoryData);
   }catch(err) {
     res.status(500).json(err);
   }
@@ -44,8 +44,8 @@ router.get('/:id', async (req, res) => {
 
 router.post('/', async (req, res) => {
   try {
-    const categoryInfo = await Category.create(req.body);
-    res.status(200).json(categoryInfo);
+    const categoryData = await Category.create(req.body);
+    res.status(200).json(categoryData);
   } catch (err) {
     res.status(400).json(err);
   }
@@ -55,7 +55,7 @@ router.post('/', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
   try {
-    const categoryInfo = await Category.update({
+    const categoryData = await Category.update({
       id: req.body.id,
       category_name: req.body.category_name,
     },
@@ -76,18 +76,18 @@ router.put('/:id', async (req, res) => {
 
 router.delete('/:id', async (req, res) => {
   try {
-    const categoryInfo= await Category.destroy({
+    const categoryData= await Category.destroy({
       where: {
         id: req.params.id
       }
     });
 
-    if (!categoryInfo) {
+    if (!categoryData) {
       res.status(404).json({ message: 'No category found with this id!' });
       return;
     }
 
-    res.status(200).json(categoryInfo);
+    res.status(200).json(categoryData);
   } catch (err) {
     res.status(500).json(err);
   }
