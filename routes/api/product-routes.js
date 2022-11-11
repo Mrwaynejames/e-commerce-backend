@@ -51,7 +51,7 @@ router.get('/:id', async (req, res) => {
 });
 
 // create new product
-router.post('/', (req, res) => {
+router.post("/", (req, res) => {
     Product.create({
       product_name: req.body.product_name,
       price: req.body.price,
@@ -82,10 +82,13 @@ router.post('/', (req, res) => {
 
 // update product
 router.put('/:id', (req, res) => {
-  // update product data
-  Product.update(req.body, {
-    where: {
-      id: req.params.id,
+
+  Product.update({
+    id: req.body.id,
+    product_name: req.body.product_name,
+  },
+  {
+    where: { id: req.params.id,
     },
   })
     .then((product) => {
@@ -122,7 +125,18 @@ router.put('/:id', (req, res) => {
     });
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', async (req, res) => {
+  try {
+    const productData = await Product.destroy(
+      {where: { id: req.params.id}}
+    );
+    if(!productData) {
+      res.status(404).json("No product found with this id")
+    }
+    res.status(200).json("Product was deleted");
+  } catch(err) {
+    res.status(500).json(err);
+  }
   // delete one product by its `id` value
 });
 
